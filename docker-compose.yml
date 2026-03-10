@@ -1,0 +1,51 @@
+# ─────────────────────────────────────────────────────────────
+# docker-compose.yml
+# ─────────────────────────────────────────────────────────────
+# Runs the full stack: Streamlit app + Ollama together
+#
+# Usage:
+#   docker compose up          → start everything
+#   docker compose up -d       → start in background
+#   docker compose down        → stop everything
+#   docker compose logs -f     → watch logs
+# ─────────────────────────────────────────────────────────────
+
+services:
+
+  # ── Streamlit App ───────────────────────────────────────────
+  app:
+    build: .
+    ports:
+      - "8501:8501"
+    env_file:
+      - .env
+    environment:
+      # Point to the ollama service defined below
+      - OLLAMA_BASE_URL=http://ollama:11434
+    volumes:
+      # Persist uploaded files across restarts
+      - ./uploads:/app/uploads
+    depends_on:
+      - ollama
+    restart: unless-stopped
+
+  # ── Ollama (Local LLM server) ───────────────────────────────
+  ollama:
+    image: ollama/ollama:latest
+    ports:
+      - "11434:11434"
+    volumes:
+      # Persist downloaded models across restarts
+      - ollama_models:/root/.ollama
+    restart: unless-stopped
+    # Uncomment if you have an NVIDIA GPU:
+    # deploy:
+    #   resources:
+    #     reservations:
+    #       devices:
+    #         - driver: nvidia
+    #           count: all
+    #           capabilities: [gpu]
+
+volumes:
+  ollama_models:
