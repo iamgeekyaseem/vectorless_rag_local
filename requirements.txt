@@ -1,0 +1,15 @@
+# ── Web UI ──────────────────────────────────────────────────
+streamlit>=1.35.0          # Turns Python scripts into web apps
+
+# ── Local LLM (Ollama) ──────────────────────────────────────
+ollama>=0.2.0              # Official Ollama Python client
+
+# ── PDF Reading ─────────────────────────────────────────────
+pypdf2>=3.0.0              # Extract text from PDF files
+
+# ── Data Validation (Tree Index structure) ──────────────────
+pydantic>=2.0.0            # Define clean data models (our tree nodes)
+
+# ── Future API Key Support ──────────────────────────────────
+openai>=1.30.0             # Works for OpenAI AND Groq (same client!)
+python-dotenv>=1.0.0       # Load secrets from .env file safely
